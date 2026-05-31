@@ -50,12 +50,12 @@ embeddings = model.encode(
 
 embeddings = embeddings.astype("float32")
 
-mean = embeddings.mean()
-std = embeddings.std()
-embeddings_norm = (embeddings - mean) / std
+# mean = embeddings.mean()
+# std = embeddings.std()
+# embeddings_norm = (embeddings - mean) / std
 
 print("Saving embeddings...")
-np.save(emb_path, embeddings_norm)
+np.save(emb_path, embeddings)
 
 with open(item_ids_path, "w") as f:
     json.dump(item_ids, f, indent=2)

@@ -13,7 +13,7 @@ OUTPUT_PATH     = "lightFM/submission.csv"
 SAMPLE_SUBMISSION_PATH = "data/sample_submission.csv"
 
 LATENT_DIM  = 64
-EPOCHS      = 30
+EPOCHS      = 5
 BATCH_SIZE  = 4096
 LR          = 1e-3
 TOP_K       = 10
