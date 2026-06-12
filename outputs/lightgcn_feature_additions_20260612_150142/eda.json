@@ -1,0 +1,12 @@
+{
+  "validation_name": "provided_test_exact_rows_removed",
+  "n_users": 23284,
+  "n_items": 13441,
+  "train_all_rows": 158471,
+  "train_context_rows": 143313,
+  "valid_rows": 15158,
+  "valid_users": 7437,
+  "eval_users": 7437,
+  "target_overlap_eval_users": 1285,
+  "train_context_items": 13441
+}

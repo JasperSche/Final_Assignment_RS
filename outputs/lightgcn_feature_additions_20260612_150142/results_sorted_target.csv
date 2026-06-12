@@ -1,0 +1,103 @@
+experiment,group,recall_at_10_all_valid_users,recall_at_10_target_overlap_users,time_sec,notes
+multiseed_LightGCN + recent_pop + trend120v365 gamma=0.1,addition_trend_multiseed,0.02121524509584211,0.02424093632264838,11.736474514007568,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend120v365 gamma=0.3,addition_trend_multiseed,0.021868350226559183,0.02403341362485331,11.768288373947144,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend120v365 gamma=0.2,addition_trend_multiseed,0.021625356699983566,0.023929652275955778,12.329204797744751,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend120v365 gamma=0.15,addition_trend_multiseed,0.021558125289468575,0.023929652275955778,11.801929235458374,Multi-seed current best plus trend acceleration.
+dynamic_alpha_single_le3_a0p75_le6_a0p65_le12_a0p55_le999999_a0p45,addition_dynamic_alpha,0.017629196360539647,0.023856154653820023,4.764097690582275,User-history-length dependent alpha.
+multiseed_LightGCN + recent_pop + cat_recent gamma=0.15,addition_category_conditioned_multiseed,0.019801571294108606,0.023429374343771226,14.560790061950684,Multi-seed current best plus category-conditioned recent popularity.
+multiseed_LightGCN + recent180 alpha=0.575,addition_multiseed,0.018998476088028328,0.023333024519794947,10.393113613128662,Multi-seed LightGCN plus recent popularity.
+dynamic_alpha_multiseed_le3_a0p75_le6_a0p65_le12_a0p55_le999999_a0p45,addition_dynamic_alpha_multiseed,0.018666801129487695,0.02320332283367303,10.029422521591187,Dynamic alpha using multi-seed LightGCN.
+multiseed_LightGCN + recent_pop + trend90v365 gamma=0.3,addition_trend_multiseed,0.02164776717015523,0.02315144215922426,11.460191488265991,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend60v365 gamma=0.3,addition_trend_multiseed,0.02140365312007103,0.02315144215922426,11.999248027801514,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend90v365 gamma=0.2,addition_trend_multiseed,0.02131961385692729,0.023073621147551106,11.787354230880737,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend60v365 gamma=0.2,addition_trend_multiseed,0.021275913440092546,0.023073621147551106,12.28997540473938,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend90v365 gamma=0.15,addition_trend_multiseed,0.021238936164309295,0.023073621147551106,11.784953594207764,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + recentLGCN180 gamma=0.15,addition_recent_window_lgcn_multiseed,0.02065402289282886,0.022840158112531653,12.512534618377686,Multi-seed current best plus recent-window LightGCN.
+dynamic_alpha_multiseed_le3_a0p6_le6_a0p55_le12_a0p5_le999999_a0p4,addition_dynamic_alpha_multiseed,0.01929637526652452,0.022793836081773825,10.119852542877197,Dynamic alpha using multi-seed LightGCN.
+single_LightGCN + recent_pop + cat_recent gamma=0.05,addition_category_conditioned,0.01978508359105374,0.022658575751960966,6.6266419887542725,Current best plus user-category-conditioned recent popularity.
+multiseed_LightGCN + recent180 alpha=0.6,addition_multiseed,0.01855698982564654,0.022645605583348775,10.0115647315979,Multi-seed LightGCN plus recent popularity.
+dynamic_alpha_multiseed_le3_a0p65_le6_a0p55_le12_a0p5_le999999_a0p45,addition_dynamic_alpha_multiseed,0.019256036420215523,0.022515903897226852,10.349428415298462,Dynamic alpha using multi-seed LightGCN.
+multiseed_LightGCN + recent_pop + cat_recent gamma=0.05,addition_category_conditioned_multiseed,0.020537328373149265,0.02247699339139028,12.188819885253906,Multi-seed current best plus category-conditioned recent popularity.
+multiseed_LightGCN + recent_pop + recentLGCN180 gamma=0.1,addition_recent_window_lgcn_multiseed,0.02073582110895544,0.022451053054165896,12.069864988327026,Multi-seed current best plus recent-window LightGCN.
+multiseed_LightGCN + recent_pop + trend60v365 gamma=0.1,addition_trend_multiseed,0.020956564240146334,0.022295411030819588,12.1673424243927,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend60v365 gamma=0.15,addition_trend_multiseed,0.020956564240146334,0.022295411030819588,12.56584358215332,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend90v365 gamma=0.1,addition_trend_multiseed,0.020956564240146334,0.022295411030819588,12.280144929885864,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + cat_recent gamma=0.1,addition_category_conditioned_multiseed,0.020428264084980503,0.022282440862207396,12.622523784637451,Multi-seed current best plus category-conditioned recent popularity.
+single_LightGCN + recent_pop + trend120v365 gamma=0.2,addition_trend,0.02035078788810132,0.022282440862207396,6.885562419891357,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend120v365 gamma=0.3,addition_trend,0.02034502519577146,0.022282440862207396,6.6325843334198,Current best plus trend acceleration.
+single_LightGCN + recent_pop + recentLGCN365 gamma=0.3,addition_recent_window_lgcn,0.0198945213870587,0.022256500524983014,7.222615718841553,Current best plus recent-window LightGCN.
+multiseed_LightGCN + recent_pop + trend90v365 gamma=0.05,addition_trend_multiseed,0.021010349368558324,0.02221759001914644,12.306682586669922,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend30v365 gamma=0.3,addition_trend_multiseed,0.02095320266962058,0.02221759001914644,11.60703182220459,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend30v365 gamma=0.1,addition_trend_multiseed,0.02094311795804333,0.02221759001914644,11.689587831497192,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend30v365 gamma=0.15,addition_trend_multiseed,0.020926310105414583,0.02221759001914644,11.682225704193115,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend30v365 gamma=0.2,addition_trend_multiseed,0.020926310105414583,0.02221759001914644,11.92844820022583,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent180 alpha=0.5,addition_multiseed,0.02087588654752834,0.02221759001914644,10.090455293655396,Multi-seed LightGCN plus recent popularity.
+multiseed_LightGCN + recent_pop + trend30v365 gamma=0.05,addition_trend_multiseed,0.02087588654752834,0.02221759001914644,11.62450909614563,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend60v365 gamma=0.05,addition_trend_multiseed,0.02087588654752834,0.02221759001914644,13.481876611709595,Multi-seed current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + trend120v365 gamma=0.05,addition_trend_multiseed,0.02087588654752834,0.02221759001914644,12.047706127166748,Multi-seed current best plus trend acceleration.
+single_LightGCN + recent_pop + trend120v365 gamma=0.15,addition_trend,0.020243217631277333,0.022204619850534246,6.425251245498657,Current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + cat_recent gamma=0.2,addition_category_conditioned_multiseed,0.019018325361608943,0.022145327651164226,12.980076313018799,Multi-seed current best plus category-conditioned recent popularity.
+single_LightGCN + recent_pop + cat_recent gamma=0.3,addition_category_conditioned,0.016841895200104155,0.022132357482552035,7.142053127288818,Current best plus user-category-conditioned recent popularity.
+single_LightGCN + recent_pop + trend120v365 gamma=0.1,addition_trend,0.01991058222401506,0.02212679883886109,6.938173055648804,Current best plus trend acceleration.
+dynamic_alpha_single_le3_a0p6_le6_a0p55_le12_a0p5_le999999_a0p4,addition_dynamic_alpha,0.018529937186653602,0.022048977827187944,4.770182132720947,User-history-length dependent alpha.
+single_LightGCN + recent180 alpha=0.525,current_family_single_seed,0.019326629401256266,0.022010067321351367,5.261015892028809,Fixed-alpha current best family.
+dynamic_alpha_single_le3_a0p65_le6_a0p55_le12_a0p5_le999999_a0p45,addition_dynamic_alpha,0.018182734973779747,0.022010067321351367,4.721623420715332,User-history-length dependent alpha.
+multiseed_LightGCN + recent_pop + cat_recent gamma=0.3,addition_category_conditioned_multiseed,0.017252967252967252,0.022008214440121056,12.233494758605957,Multi-seed current best plus category-conditioned recent popularity.
+single_LightGCN + recent_pop + cat_recent gamma=0.15,addition_category_conditioned,0.01878333557438035,0.02194521647829041,6.786313772201538,Current best plus user-category-conditioned recent popularity.
+single_LightGCN + recent_pop + recentLGCN365 gamma=0.1,addition_recent_window_lgcn,0.02025591689770794,0.02193224630967822,6.93181586265564,Current best plus recent-window LightGCN.
+single_LightGCN + recent_pop + recentLGCN365 gamma=0.05,addition_recent_window_lgcn,0.01969677566692492,0.02193224630967822,6.666679382324219,Current best plus recent-window LightGCN.
+single_LightGCN + recent_pop + trend90v365 gamma=0.3,addition_trend,0.020301484853723656,0.021893335803841642,6.709769248962402,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend60v365 gamma=0.3,addition_trend,0.0199384352369427,0.021893335803841642,7.1489691734313965,Current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + recentLGCN180 gamma=0.2,addition_recent_window_lgcn_multiseed,0.019779160823936943,0.021867395466617257,12.413873672485352,Multi-seed current best plus recent-window LightGCN.
+single_LightGCN + recent_pop + trend60v365 gamma=0.2,addition_trend,0.019711129039487244,0.021815514792168488,6.912940979003906,Current best plus trend acceleration.
+single_LightGCN + recent_pop + cat_recent gamma=0.1,addition_category_conditioned,0.019469469469469466,0.02177660428633191,6.849642753601074,Current best plus user-category-conditioned recent popularity.
+multiseed_LightGCN + recent180 alpha=0.525,addition_multiseed,0.020206400430281025,0.02175066394910753,10.05036973953247,Multi-seed LightGCN plus recent popularity.
+single_LightGCN + recent_pop + trend30v365 gamma=0.3,addition_trend,0.01977836045000224,0.021737693780495337,6.493715286254883,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend30v365 gamma=0.1,addition_trend,0.019751467885796244,0.021737693780495337,6.3942711353302,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend30v365 gamma=0.15,addition_trend,0.019751467885796244,0.021737693780495337,6.565446615219116,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend30v365 gamma=0.2,addition_trend,0.019751467885796244,0.021737693780495337,6.488450288772583,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend60v365 gamma=0.05,addition_trend,0.019751467885796244,0.021737693780495337,6.62893009185791,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend90v365 gamma=0.05,addition_trend,0.019751467885796244,0.021737693780495337,6.454639673233032,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend60v365 gamma=0.15,addition_trend,0.01969768275738425,0.021737693780495337,6.750663995742798,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend90v365 gamma=0.1,addition_trend,0.01969768275738425,0.021737693780495337,6.742860794067383,Current best plus trend acceleration.
+single_LightGCN + recent180 alpha=0.5,current_family_single_seed,0.01968423647528125,0.021737693780495337,4.873440742492676,Fixed-alpha current best family.
+single_LightGCN + recent_pop + trend30v365 gamma=0.05,addition_trend,0.01968423647528125,0.021737693780495337,6.246197938919067,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend60v365 gamma=0.1,addition_trend,0.01968423647528125,0.021737693780495337,6.63293194770813,Current best plus trend acceleration.
+multiseed_LightGCN + recent_pop + recentLGCN180 gamma=0.05,addition_recent_window_lgcn_multiseed,0.020808655137013347,0.021672842937434378,12.576284408569336,Multi-seed current best plus recent-window LightGCN.
+single_LightGCN + recent_pop + recentLGCN180 gamma=0.1,addition_recent_window_lgcn,0.019788658594628743,0.021672842937434378,6.941045761108398,Current best plus recent-window LightGCN.
+single_LightGCN + recent_pop + recentLGCN180 gamma=0.05,addition_recent_window_lgcn,0.019663159961667422,0.021672842937434378,7.231225252151489,Current best plus recent-window LightGCN.
+single_LightGCN + recent180 alpha=0.6,current_family_single_seed,0.017462078282973807,0.021659872768822187,4.850797176361084,Fixed-alpha current best family.
+single_LightGCN + recent_pop + recentLGCN180 gamma=0.15,addition_recent_window_lgcn,0.019403572015512315,0.02154314125131246,7.666692495346069,Current best plus recent-window LightGCN.
+single_LightGCN + recent_pop + recentLGCN365 gamma=0.15,addition_recent_window_lgcn,0.020178600775615698,0.021543141251312455,7.215637922286987,Current best plus recent-window LightGCN.
+multiseed_LightGCN + recent_pop + recentLGCN365 gamma=0.3,addition_recent_window_lgcn_multiseed,0.019430251146669054,0.021543141251312455,12.462291955947876,Multi-seed current best plus recent-window LightGCN.
+multiseed_LightGCN + recent_pop + recentLGCN180 gamma=0.3,addition_recent_window_lgcn_multiseed,0.019292159963801753,0.021450497189796802,12.079210996627808,Multi-seed current best plus recent-window LightGCN.
+single_LightGCN + recent_pop + cat_recent gamma=0.2,addition_category_conditioned,0.01801545682142697,0.021276326354147362,7.241485595703125,Current best plus user-category-conditioned recent popularity.
+multiseed_LightGCN + recent_pop + recentLGCN365 gamma=0.15,addition_recent_window_lgcn_multiseed,0.020210509016479163,0.021154036192946698,12.13211965560913,Multi-seed current best plus recent-window LightGCN.
+multiseed_LightGCN + recent180 alpha=0.55,addition_multiseed,0.019454155648185496,0.02110215551849793,10.043108940124512,Multi-seed LightGCN plus recent popularity.
+single_LightGCN + recent_pop + trend90v365 gamma=0.2,addition_trend,0.01977259775767238,0.02103730467543697,6.634373188018799,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend90v365 gamma=0.15,addition_trend,0.01963045134686926,0.020959483663763823,6.658045768737793,Current best plus trend acceleration.
+single_LightGCN + recent_pop + trend120v365 gamma=0.05,addition_trend,0.019549773654251264,0.020959483663763823,6.510833263397217,Current best plus trend acceleration.
+single_LightGCN + recent180 alpha=0.55,current_family_single_seed,0.01844701844701845,0.020920573157927242,5.03298282623291,Fixed-alpha current best family.
+multiseed_LightGCN + recent_pop + recentLGCN365 gamma=0.05,addition_recent_window_lgcn_multiseed,0.020589032529331038,0.02089463282070286,11.876346588134766,Multi-seed current best plus recent-window LightGCN.
+single_LightGCN + recent180 alpha=0.575,current_family_single_seed,0.018100776682866235,0.02088166265209067,4.807014226913452,Fixed-alpha current best family.
+multiseed_LightGCN + recent_pop + recentLGCN365 gamma=0.2,addition_recent_window_lgcn_multiseed,0.01999963716381627,0.02076493113458094,12.05618405342102,Multi-seed current best plus recent-window LightGCN.
+multiseed_LightGCN + recent_pop + recentLGCN365 gamma=0.1,addition_recent_window_lgcn_multiseed,0.02055466980840115,0.020635229448459018,12.442859172821045,Multi-seed current best plus recent-window LightGCN.
+single_LightGCN + recent_pop + recentLGCN180 gamma=0.3,addition_recent_window_lgcn,0.01868894480834779,0.02045920573157927,7.520134687423706,Current best plus recent-window LightGCN.
+single_LightGCN + recent_pop + recentLGCN180 gamma=0.2,addition_recent_window_lgcn,0.019316011107055883,0.020375826076215183,7.036556243896484,Current best plus recent-window LightGCN.
+single_LightGCN + recent180 alpha=0.475,current_family_single_seed,0.01966353346950362,0.019986721017849426,4.774963140487671,Fixed-alpha current best family.
+single_LightGCN + recent180 alpha=0.45,current_family_single_seed,0.019119919493053823,0.019680995614847756,4.9968461990356445,Fixed-alpha current best family.
+single_LightGCN + recent_pop + recentLGCN365 gamma=0.2,addition_recent_window_lgcn,0.019549400146415073,0.019467914273361746,6.792694091796875,Current best plus recent-window LightGCN.
+multiseed_LightGCN + recent180 alpha=0.475,addition_multiseed,0.02053380672783658,0.019356741399542958,10.393341064453125,Multi-seed LightGCN plus recent popularity.
+single_LightGCN + recent180 alpha=0.42,current_family_single_seed,0.018918438694558094,0.018643382125872396,4.6948628425598145,Fixed-alpha current best family.
+multiseed_LightGCN + recent180 alpha=0.45,addition_multiseed,0.020477780552407416,0.01857853128281144,10.349267482757568,Multi-seed LightGCN plus recent popularity.
+multiseed_LightGCN + recent180 alpha=0.42,addition_multiseed,0.020113610412117875,0.01772250015440677,10.036855936050415,Multi-seed LightGCN plus recent popularity.
+recent_pop_180d,standalone_signal,0.012216480873197292,0.0174424062750911,0.9100918769836426,Recent popularity standalone.
+LightGCN_full_seed42,baseline,0.014550904849412311,0.014507133592736705,1.4835703372955322,Single-seed full LightGCN.
+category_conditioned_recent180,addition_category_conditioned_standalone,0.0077936678682947345,0.012147489345932926,0.9222831726074219,User dominant-category conditioned recent popularity.
+LightGCN_full_multiseed_42-43-44,addition_multiseed,0.01389689262823591,0.011039775183744056,7.280630588531494,RRF-average of multiple LightGCN seeds.
+LightGCN_recent365d_seed42,addition_recent_window_lgcn,0.00830846838309525,0.0064591439688715955,1.4681882858276367,LightGCN trained only on last 365 days.
+LightGCN_recent180d_seed42,addition_recent_window_lgcn,0.00551889842934619,0.003060959792477302,2.397730588912964,LightGCN trained only on last 180 days.
+trend_120v365,addition_trend_standalone,0.0034160493115716994,0.0016990920881971463,0.946000337600708,Relative trend / acceleration standalone.
+trend_30v365,addition_trend_standalone,0.003181326315654674,0.0016601815823605707,0.9300158023834229,Relative trend / acceleration standalone.
+trend_60v365,addition_trend_standalone,0.0029661858020066977,0.0016601815823605707,0.9507811069488525,Relative trend / acceleration standalone.
+trend_90v365,addition_trend_standalone,0.002619944037854486,0.0011932555123216602,0.9400265216827393,Relative trend / acceleration standalone.

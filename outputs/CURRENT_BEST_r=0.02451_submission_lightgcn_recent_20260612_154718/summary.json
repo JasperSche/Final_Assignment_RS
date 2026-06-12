@@ -1,0 +1,16 @@
+{
+  "run_id": "20260612_154718",
+  "output_dir": "outputs/submission_lightgcn_recent_20260612_154718",
+  "num_outputs": 8,
+  "outputs": [
+    "outputs/submission_lightgcn_recent_20260612_154718/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl180_alpha0p5.csv",
+    "outputs/submission_lightgcn_recent_20260612_154718/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl180_dynamic_le3_a0p6_le6_a0p55_le12_a0p5_le999999_a0p4.csv",
+    "outputs/submission_lightgcn_recent_20260612_154718/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl180_alpha0p5_trend120v365_gamma0p1.csv",
+    "outputs/submission_lightgcn_recent_20260612_154718/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl180_alpha0p5_trend120v365_gamma0p2.csv",
+    "outputs/submission_lightgcn_recent_20260612_154718/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl180_alpha0p5_trend120v365_gamma0p3.csv",
+    "outputs/submission_lightgcn_recent_20260612_154718/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl180_alpha0p5_trend90v365_gamma0p1.csv",
+    "outputs/submission_lightgcn_recent_20260612_154718/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl180_alpha0p5_trend90v365_gamma0p2.csv",
+    "outputs/submission_lightgcn_recent_20260612_154718/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl180_alpha0p5_trend90v365_gamma0p3.csv"
+  ],
+  "train_time_sec": 694.1800971031189
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Train final LightGCN + recent-popularity RRF blends and write Kaggle submissions.
+Train final LightGCN + recent-popularity (+ optional trend) RRF blends and write Kaggle submissions.
 
 This script is for final submission generation, not validation. It trains on all
 deduplicated train.csv interactions and writes one submission CSV per requested
@@ -81,6 +81,22 @@ def parse_float_list(s: str) -> List[float]:
     return [float(x.strip()) for x in s.split(",") if x.strip()]
 
 
+def parse_trend_specs(s: str) -> List[Tuple[int, int]]:
+    """
+    Parse trend specs like "120:365,90:365" into [(120, 365), (90, 365)].
+    """
+    if s is None or str(s).strip() == "":
+        return []
+    out = []
+    for part in str(s).split(","):
+        part = part.strip()
+        if not part:
+            continue
+        short_hl, long_hl = part.split(":")
+        out.append((int(short_hl), int(long_hl)))
+    return out
+
+
 def safe_name(x) -> str:
     return str(x).replace(".", "p").replace("-", "m").replace(",", "_")
 
@@ -108,7 +124,7 @@ def time_decay_weights(df: pd.DataFrame, half_life_days: int) -> np.ndarray:
     return np.exp(-np.log(2) * age_days / half_life_days).astype(np.float32)
 
 
-def time_weighted_item_scores(
+def time_weighted_counts(
     train_df: pd.DataFrame,
     n_items: int,
     half_life_days: int,
@@ -116,12 +132,40 @@ def time_weighted_item_scores(
     max_ts = train_df["timestamp"].max()
     age_days = (max_ts - train_df["timestamp"].to_numpy()) / MS_PER_DAY
     weights = np.exp(-np.log(2) * age_days / half_life_days).astype(np.float32)
-    scores = np.bincount(
+    return np.bincount(
         train_df["item_idx"].to_numpy(np.int32),
         weights=weights,
         minlength=n_items,
     ).astype(np.float32)
-    return np.log1p(scores).astype(np.float32)
+
+
+def time_weighted_item_scores(
+    train_df: pd.DataFrame,
+    n_items: int,
+    half_life_days: int,
+) -> np.ndarray:
+    return np.log1p(
+        time_weighted_counts(train_df, n_items=n_items, half_life_days=half_life_days)
+    ).astype(np.float32)
+
+
+def trend_score(
+    train_df: pd.DataFrame,
+    n_items: int,
+    short_hl: int,
+    long_hl: int,
+) -> np.ndarray:
+    """
+    Trend acceleration score used in validation:
+        log(1 + short_count) - log(1 + long_count) + 0.15 * log(1 + short_count)
+
+    The support term prevents extremely rare one-off items from dominating.
+    """
+    short = time_weighted_counts(train_df, n_items=n_items, half_life_days=short_hl)
+    long = time_weighted_counts(train_df, n_items=n_items, half_life_days=long_hl)
+    return (
+        np.log1p(short) - np.log1p(long + 1e-6) + 0.15 * np.log1p(short)
+    ).astype(np.float32)
 
 
 def dense_rrf(scores: np.ndarray, rrf_k: float = 60.0) -> np.ndarray:
@@ -522,6 +566,9 @@ def generate_predictions(
     output_dir: Path,
     name_prefix: str,
     dynamic_alpha_bins: Optional[List[Tuple[int, float]]] = None,
+    trend_score_vectors: Optional[Dict[Tuple[int, int], np.ndarray]] = None,
+    trend_gammas: Optional[Sequence[float]] = None,
+    trend_base_alphas: Optional[Sequence[float]] = None,
 ) -> List[Path]:
     sample = data.sample_submission
     target_users = sample["user_idx"].to_numpy(np.int32)
@@ -539,6 +586,13 @@ def generate_predictions(
         hl: normalize_vector(scores, method=blend_norm, rrf_k=rrf_k)
         for hl, scores in pop_score_vectors.items()
     }
+
+    trend_components = {}
+    if trend_score_vectors:
+        trend_components = {
+            spec: normalize_vector(scores, method=blend_norm, rrf_k=rrf_k)
+            for spec, scores in trend_score_vectors.items()
+        }
 
     # Fixed alpha submissions.
     for half_life, pop_component in pop_components.items():
@@ -614,6 +668,58 @@ def generate_predictions(
             print("Saved", out_path)
             output_paths.append(out_path)
 
+
+    # Trend-augmented submissions.
+    if trend_components and trend_gammas:
+        base_alphas = list(trend_base_alphas) if trend_base_alphas else list(alphas)
+        for half_life, pop_component in pop_components.items():
+            for alpha in base_alphas:
+                for (short_hl, long_hl), trend_component in trend_components.items():
+                    for gamma in trend_gammas:
+                        print(f"\nGenerating trend submission: hl={half_life}, alpha={alpha}, trend={short_hl}v{long_hl}, gamma={gamma}")
+                        pred_item_indices: Dict[int, List[int]] = {}
+
+                        for start in tqdm(
+                            range(0, len(target_users), batch_size),
+                            desc=f"predict trend {short_hl}v{long_hl} g={gamma}",
+                            leave=False,
+                        ):
+                            batch_users = target_users[start:start + batch_size]
+                            lgcn_component = make_lightgcn_component(
+                                embeddings, batch_users, blend_norm=blend_norm, rrf_k=rrf_k
+                            )
+                            scores = (
+                                (1.0 - alpha) * lgcn_component
+                                + alpha * pop_component[None, :]
+                                + float(gamma) * trend_component[None, :]
+                            )
+
+                            scores[:, ~allowed_mask] = -np.inf
+                            for r, u in enumerate(batch_users):
+                                seen = X_seen[int(u)].indices
+                                if len(seen):
+                                    scores[r, seen] = -np.inf
+
+                                row = scores[r]
+                                k = 10
+                                finite = np.isfinite(row)
+                                if finite.sum() < k:
+                                    raise RuntimeError(f"User {u} has fewer than {k} finite candidate scores.")
+                                candidate_idx = np.where(finite)[0]
+                                candidate_scores = row[candidate_idx]
+                                part = np.argpartition(-candidate_scores, k - 1)[:k]
+                                top_items = candidate_idx[part[np.argsort(-candidate_scores[part])]]
+                                pred_item_indices[int(u)] = [int(x) for x in top_items]
+
+                        sub = build_submission_dataframe(sample, pred_item_indices, data.idx2item)
+                        out_path = output_dir / (
+                            f"{name_prefix}_hl{half_life}_alpha{safe_name(alpha)}"
+                            f"_trend{short_hl}v{long_hl}_gamma{safe_name(gamma)}.csv"
+                        )
+                        sub.to_csv(out_path, index=False)
+                        print("Saved", out_path)
+                        output_paths.append(out_path)
+
     return output_paths
 
 
@@ -640,6 +746,9 @@ def main():
 
     parser.add_argument("--recent_half_lives", type=str, default="180")
     parser.add_argument("--alphas", type=str, default="0.5,0.6")
+    parser.add_argument("--trend_specs", type=str, default="", help="Optional trend specs, e.g. 120:365,90:365.")
+    parser.add_argument("--trend_gammas", type=str, default="", help="Optional trend weights, e.g. 0.1,0.2,0.3.")
+    parser.add_argument("--trend_base_alphas", type=str, default="", help="Optional alpha list for trend submissions; defaults to --alphas.")
     parser.add_argument("--blend_norm", type=str, default="rrf", choices=["rrf", "zscore", "minmax", "none"])
     parser.add_argument("--rrf_k", type=float, default=60.0)
     parser.add_argument("--prediction_batch_size", type=int, default=128)
@@ -689,6 +798,9 @@ def main():
     seeds = parse_int_list(args.seeds)
     alphas = parse_float_list(args.alphas)
     recent_half_lives = parse_int_list(args.recent_half_lives)
+    trend_specs = parse_trend_specs(args.trend_specs)
+    trend_gammas = parse_float_list(args.trend_gammas)
+    trend_base_alphas = parse_float_list(args.trend_base_alphas)
 
     cfg = TrainConfig(
         dim=args.dim,
@@ -723,6 +835,11 @@ def main():
         for hl in recent_half_lives
     }
 
+    trend_score_vectors = {
+        spec: trend_score(data.train, n_items=data.n_items, short_hl=spec[0], long_hl=spec[1])
+        for spec in trend_specs
+    }
+
     name_prefix = (
         f"lgcn_d{args.dim}_l{args.layers}_e{args.epochs}_{graph_name}_"
         f"{args.neg_sampling}_seeds{'-'.join(map(str, seeds))}_{args.blend_norm}"
@@ -742,6 +859,9 @@ def main():
         output_dir=out_dir,
         name_prefix=name_prefix,
         dynamic_alpha_bins=dynamic_bins,
+        trend_score_vectors=trend_score_vectors,
+        trend_gammas=trend_gammas,
+        trend_base_alphas=trend_base_alphas,
     )
 
     summary = {
