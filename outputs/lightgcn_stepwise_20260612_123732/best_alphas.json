@@ -1,0 +1,11 @@
+{
+  "recent_pop_180d": 0.3,
+  "recent_pop_365d": 0.3,
+  "category_pop_365d": 0.3,
+  "itemknn_cosine": 0.002,
+  "sequence_transition": 0.2,
+  "content_tfidf": 0.1,
+  "LightGCN_time_graph": 0.3,
+  "LightGCN_popular_negatives": 0.002,
+  "SASRec": 0.002
+}

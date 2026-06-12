@@ -1,0 +1,35 @@
+{
+  "data_dir": "data",
+  "output_root": "outputs",
+  "run_id": null,
+  "dim": 512,
+  "layers": 4,
+  "epochs": 220,
+  "batch_size": 4096,
+  "lr": 0.001,
+  "reg": 0.0002,
+  "seeds": "42",
+  "neg_sampling": "uniform",
+  "time_decay_graph_half_life": 0,
+  "recent_half_lives": "180",
+  "alphas": "0.5",
+  "blend_norm": "rrf",
+  "rrf_k": 60.0,
+  "prediction_batch_size": 64,
+  "dynamic_alpha": false,
+  "dynamic_alpha_spec": "3:0.75,6:0.65,12:0.55,999999:0.45",
+  "device": "auto",
+  "train_config": {
+    "dim": 512,
+    "layers": 4,
+    "epochs": 220,
+    "batch_size": 4096,
+    "lr": 0.001,
+    "reg": 0.0002,
+    "neg_sampling": "uniform",
+    "time_decay_graph_half_life": null
+  },
+  "seeds_parsed": [
+    42
+  ]
+}

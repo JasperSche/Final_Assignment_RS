@@ -1,0 +1,99 @@
+$ python lightgcn_stepwise_experiments_v2.py \
+  --data_dir data \
+  --output_root outputs \
+  --validation provided_test \
+  --dim 512 \
+  --layers 4 \
+  --epochs 220 \
+  --batch_size 4096 \
+  --lr 0.001 \
+  --reg 0.0002 \
+  --time_decay_half_life_days 365 \
+  --itemknn_topk 500 \
+  --seq_topk 500 \
+  --seq_recent_len 5 \
+  --skip_sasrec \
+  --alpha_grid 0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.6,0.7,0.85,1.0 \
+  --blend_norm rrf \
+  --eval_batch_size 64
+Output dir: /home/joris/Master/Semester 2/Recommender Systems/Final_Assignment_RS/outputs/lightgcn_stepwise_20260612_134537
+Device: cuda
+{
+  "validation_name": "provided_test_exact_rows_removed",
+  "n_users": 23284,
+  "n_items": 13441,
+  "train_all_rows": 158471,
+  "train_context_rows": 143313,
+  "valid_rows": 15158,
+  "valid_users": 7437,
+  "eval_users": 7437,
+  "target_overlap_eval_users": 1285,
+  "train_context_items": 13441,
+  "recall_upper_bound_all": 1.0,
+  "recall_upper_bound_target": 1.0
+}
+
+Training LightGCN_plain on cuda | dim=512, layers=4, epochs=220, neg=uniform
+LightGCN_plain:   0%|                                              | 0/220 [00:00<?, ?it/s]LightGCN_plain epoch 001/220, loss=0.64094
+LightGCN_plain:   9%|███▏                                 | 19/220 [00:27<04:42,  1.40s/it]LightGCN_plain epoch 020/220, loss=0.09083
+LightGCN_plain:  18%|██████▌                              | 39/220 [00:55<04:16,  1.41s/it]LightGCN_plain epoch 040/220, loss=0.04144
+LightGCN_plain:  27%|█████████▉                           | 59/220 [01:23<03:47,  1.41s/it]LightGCN_plain epoch 060/220, loss=0.03170
+LightGCN_plain:  36%|█████████████▎                       | 79/220 [01:51<03:14,  1.38s/it]LightGCN_plain epoch 080/220, loss=0.02765
+LightGCN_plain:  45%|████████████████▋                    | 99/220 [02:19<02:53,  1.43s/it]LightGCN_plain epoch 100/220, loss=0.02576
+LightGCN_plain:  54%|███████████████████▍                | 119/220 [02:47<02:28,  1.47s/it]LightGCN_plain epoch 120/220, loss=0.02378
+LightGCN_plain:  63%|██████████████████████▋             | 139/220 [03:15<01:56,  1.43s/it]LightGCN_plain epoch 140/220, loss=0.02269
+LightGCN_plain:  72%|██████████████████████████          | 159/220 [03:43<01:25,  1.40s/it]LightGCN_plain epoch 160/220, loss=0.02181
+LightGCN_plain:  81%|█████████████████████████████▎      | 179/220 [04:10<00:43,  1.07s/it]LightGCN_plain epoch 180/220, loss=0.02101
+LightGCN_plain:  90%|████████████████████████████████▌   | 199/220 [04:31<00:21,  1.04s/it]LightGCN_plain epoch 200/220, loss=0.02021
+LightGCN_plain: 100%|███████████████████████████████████▊| 219/220 [04:53<00:01,  1.02s/it]LightGCN_plain epoch 220/220, loss=0.01984
+LightGCN_plain: 100%|████████████████████████████████████| 220/220 [04:54<00:00,  1.34s/it]
+LightGCN_plain                                   | all=0.014551 | target=0.014507 | 4.2s   
+recent_pop_180d                                  | all=0.012216 | target=0.017442 | 1.3s   
+LightGCN + recent_pop_180d alpha=0.15            | all=0.015568 | target=0.014334 | 10.4s  
+LightGCN + recent_pop_180d alpha=0.2             | all=0.015988 | target=0.015112 | 10.1s  
+LightGCN + recent_pop_180d alpha=0.25            | all=0.016841 | target=0.016172 | 8.5s   
+LightGCN + recent_pop_180d alpha=0.3             | all=0.017728 | target=0.016703 | 9.0s   
+LightGCN + recent_pop_180d alpha=0.35            | all=0.017659 | target=0.017009 | 10.0s  
+LightGCN + recent_pop_180d alpha=0.4             | all=0.018824 | target=0.018643 | 12.0s  
+LightGCN + recent_pop_180d alpha=0.45            | all=0.019120 | target=0.019681 | 12.2s  
+LightGCN + recent_pop_180d alpha=0.5             | all=0.019684 | target=0.021738 | 10.6s  
+LightGCN + recent_pop_180d alpha=0.6             | all=0.017462 | target=0.021660 | 11.7s  
+LightGCN + recent_pop_180d alpha=0.7             | all=0.017197 | target=0.022118 | 11.1s  
+LightGCN + recent_pop_180d alpha=0.85            | all=0.014441 | target=0.021106 | 11.5s  
+LightGCN + recent_pop_180d alpha=1               | all=0.012216 | target=0.017442 | 9.5s   
+recent_pop_365d                                  | all=0.011021 | target=0.013873 | 1.3s   
+LightGCN + recent_pop_365d alpha=0.15            | all=0.015609 | target=0.015112 | 9.9s   
+LightGCN + recent_pop_365d alpha=0.2             | all=0.015988 | target=0.015112 | 10.7s  
+LightGCN + recent_pop_365d alpha=0.25            | all=0.016011 | target=0.015631 | 8.4s   
+LightGCN + recent_pop_365d alpha=0.3             | all=0.016897 | target=0.015631 | 9.9s   
+LightGCN + recent_pop_365d alpha=0.35            | all=0.017639 | target=0.016361 | 10.3s  
+LightGCN + recent_pop_365d alpha=0.4             | all=0.017987 | target=0.018306 | 11.0s  
+LightGCN + recent_pop_365d alpha=0.45            | all=0.018094 | target=0.017995 | 10.3s  
+LightGCN + recent_pop_365d alpha=0.5             | all=0.018165 | target=0.019727 | 11.6s  
+LightGCN + recent_pop_365d alpha=0.6             | all=0.017543 | target=0.022257 | 10.5s  
+LightGCN + recent_pop_365d alpha=0.7             | all=0.016025 | target=0.020173 | 8.0s   
+LightGCN + recent_pop_365d alpha=0.85            | all=0.013293 | target=0.017388 | 10.9s  
+LightGCN + recent_pop_365d alpha=1               | all=0.011021 | target=0.013873 | 9.7s   
+category_pop_365d                                | all=0.008029 | target=0.011447 | 1.5s   
+LightGCN + category_pop_365d alpha=0.15          | all=0.014128 | target=0.015480 | 11.7s  
+LightGCN + category_pop_365d alpha=0.2           | all=0.014248 | target=0.014896 | 11.7s  
+LightGCN + category_pop_365d alpha=0.25          | all=0.014641 | target=0.014780 | 9.5s   
+LightGCN + category_pop_365d alpha=0.3           | all=0.014099 | target=0.014896 | 12.9s  
+LightGCN + category_pop_365d alpha=0.35          | all=0.014172 | target=0.015930 | 11.1s  
+LightGCN + category_pop_365d alpha=0.4           | all=0.014273 | target=0.016837 | 13.6s  
+LightGCN + category_pop_365d alpha=0.45          | all=0.013892 | target=0.017706 | 12.5s  
+LightGCN + category_pop_365d alpha=0.5           | all=0.012730 | target=0.017214 | 10.6s  
+LightGCN + category_pop_365d alpha=0.6           | all=0.009937 | target=0.015512 | 12.8s  
+LightGCN + category_pop_365d alpha=0.7           | all=0.009515 | target=0.015785 | 13.6s  
+LightGCN + category_pop_365d alpha=0.85          | all=0.008892 | target=0.014729 | 10.7s  
+LightGCN + category_pop_365d alpha=1             | all=0.008029 | target=0.011447 | 9.3s   
+Building itemKNN cosine topk=500
+itemknn_cosine                                   | all=0.006710 | target=0.004975 | 1.6s   
+LightGCN + itemknn_cosine alpha=0.15             | all=0.013790 | target=0.013794 | 11.6s  
+LightGCN + itemknn_cosine alpha=0.2              | all=0.013674 | target=0.012562 | 10.0s  
+LightGCN + itemknn_cosine alpha=0.25             | all=0.013905 | target=0.011336 | 10.7s  
+LightGCN + itemknn_cosine alpha=0.3              | all=0.012982 | target=0.010869 | 12.5s  
+LightGCN + itemknn_cosine alpha=0.35             | all=0.012380 | target=0.009831 | 9.9s   
+LightGCN + itemknn_cosine alpha=0.4              | all=0.012011 | target=0.009053 | 10.9s  
+LightGCN + itemknn_cosine alpha=0.45             | all=0.011754 | target=0.008794 | 11.2s  
+LightGCN + itemknn_cosine alpha=0.5              | all=0.010381 | target=0.008016 | 8.0s   

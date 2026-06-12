@@ -1,0 +1,16 @@
+{
+  "max_len": 50,
+  "hidden_units": 512,
+  "num_blocks": 4,
+  "num_heads": 2,
+  "dropout_rate": 0.2,
+  "lr": 0.001,
+  "weight_decay": 1e-05,
+  "batch_size": 256,
+  "epochs": 100,
+  "patience": 20,
+  "num_workers": 0,
+  "num_negatives": 100,
+  "score_mode": "cosine",
+  "popularity_blend_alpha": 0.2
+}

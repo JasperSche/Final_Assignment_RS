@@ -1,0 +1,9 @@
+{
+  "run_id": "20260612_142700",
+  "output_dir": "outputs/submission_lightgcn_recent_20260612_142700",
+  "num_outputs": 1,
+  "outputs": [
+    "outputs/submission_lightgcn_recent_20260612_142700/lgcn_d512_l4_e220_binarygraph_uniform_seeds42_rrf_hl180_alpha0p5.csv"
+  ],
+  "train_time_sec": 235.14572429656982
+}

@@ -1,0 +1,108 @@
+experiment,group,recall_at_10_all_valid_users,recall_at_10_target_overlap_users,time_sec,notes
+LightGCN + recent_pop_180d alpha=0.6,blend_recent_pop_180d,0.017658596763074377,0.02329720214934223,4.931057691574097,rrf score blend with alpha=0.6
+LightGCN + recent_pop_180d alpha=0.5,blend_recent_pop_180d,0.01930581967895401,0.021400469396578345,4.787587642669678,rrf score blend with alpha=0.5
+LightGCN + recent_pop_180d alpha=0.7,blend_recent_pop_180d,0.016697987966644682,0.020949601630535483,4.937686443328857,rrf score blend with alpha=0.7
+LightGCN + recent_pop_180d alpha=0.85,blend_recent_pop_180d,0.01386775901701275,0.02026341794824285,4.922540664672852,rrf score blend with alpha=0.85
+LightGCN + recent_pop_365d alpha=0.6,blend_recent_pop_365d,0.016538660195376614,0.019605027484404916,8.010747194290161,rrf score blend with alpha=0.6
+LightGCN + recent_pop_180d alpha=0.45,blend_recent_pop_180d,0.018678006364573528,0.019214069544808844,4.803200006484985,rrf score blend with alpha=0.45
+LightGCN + recent_pop_365d alpha=0.45,blend_recent_pop_365d,0.01753245783096529,0.018876845160891855,6.778216361999512,rrf score blend with alpha=0.45
+LightGCN + recent_pop_365d alpha=0.5,blend_recent_pop_365d,0.01719918212455526,0.01864523500710271,8.328674793243408,rrf score blend with alpha=0.5
+LightGCN + recent_pop_365d alpha=0.7,blend_recent_pop_365d,0.015428594906206846,0.018234513001049963,7.427854061126709,rrf score blend with alpha=0.7
+LightGCN + recent_pop_180d alpha=0.4,blend_recent_pop_180d,0.018445310982624415,0.018228336730282256,4.811954498291016,rrf score blend with alpha=0.4
+recent_pop_180d,standalone_signal,0.012216480873197292,0.0174424062750911,0.9211270809173584,Timestamp-only recent popularity.
+LightGCN + recent_pop_180d alpha=1,blend_recent_pop_180d,0.012216480873197292,0.0174424062750911,4.895647287368774,rrf score blend with alpha=1.0
+LightGCN + recent_pop_180d alpha=0.35,blend_recent_pop_180d,0.01781861819175252,0.01698320054351183,4.852779388427734,rrf score blend with alpha=0.35
+LightGCN + category_pop_365d alpha=0.45,blend_category_pop_365d,0.014426259948648006,0.016872027669693042,8.176989793777466,rrf score blend with alpha=0.45
+LightGCN + category_pop_365d alpha=0.4,blend_category_pop_365d,0.014866625687521208,0.01659965412883701,7.522054672241211,rrf score blend with alpha=0.4
+LightGCN + category_pop_365d alpha=0.35,blend_category_pop_365d,0.014533083189799607,0.016444012105490704,7.621884107589722,rrf score blend with alpha=0.35
+LightGCN + recent_pop_180d alpha=0.3,blend_recent_pop_180d,0.01732558784797591,0.01620499042678031,4.991302490234375,rrf score blend with alpha=0.3
+LightGCN + recent_pop_365d alpha=0.35,blend_recent_pop_365d,0.016869534779982542,0.016127169415107157,6.974208354949951,rrf score blend with alpha=0.35
+LightGCN + recent_pop_365d alpha=0.4,blend_recent_pop_365d,0.01679664739366232,0.01608825890927058,7.715447902679443,rrf score blend with alpha=0.4
+LightGCN + category_pop_365d alpha=0.5,blend_category_pop_365d,0.012906243130123729,0.016026805015131863,8.008555173873901,rrf score blend with alpha=0.5
+LightGCN + recent_pop_365d alpha=0.85,blend_recent_pop_365d,0.012700386954118298,0.015948675189920325,7.832426309585571,rrf score blend with alpha=0.85
+LightGCN + LightGCN_time_graph alpha=0.85,blend_LightGCN_time_graph,0.01431394080647812,0.015745784695201038,11.543110609054565,rrf score blend with alpha=0.85
+LightGCN + recent_pop + sequence,controlled_combo,0.017032170763514046,0.015465690815885367,5.682977914810181,Controlled multi-signal blend using best individual alpha values; not a reranker.
+LightGCN + recent_pop_365d alpha=0.3,blend_recent_pop_365d,0.016850325805549685,0.015193317275029337,7.0893635749816895,rrf score blend with alpha=0.3
+LightGCN + category_pop_365d alpha=0.3,blend_category_pop_365d,0.014479671569223806,0.014809770860354517,8.692932844161987,rrf score blend with alpha=0.3
+LightGCN + LightGCN_time_graph alpha=0.6,blend_LightGCN_time_graph,0.014331282241730003,0.014578469520103762,5.165758371353149,rrf score blend with alpha=0.6
+LightGCN + category_pop_365d alpha=0.7,blend_category_pop_365d,0.009965562577502874,0.014578469520103762,7.79286789894104,rrf score blend with alpha=0.7
+LightGCN_time_graph_hl365,lightgcn_variant,0.013879337759934775,0.01455994070780063,1.711082935333252,LightGCN with recency-weighted graph propagation.
+LightGCN + LightGCN_time_graph alpha=1,blend_LightGCN_time_graph,0.013879337759934775,0.01455994070780063,10.780331373214722,rrf score blend with alpha=1.0
+LightGCN + recent_pop_180d alpha=0.2,blend_recent_pop_180d,0.016358415985281656,0.01449292816997097,4.955284357070923,rrf score blend with alpha=0.2
+LightGCN + recent_pop_365d alpha=0.2,blend_recent_pop_365d,0.015691704497674645,0.01441510715829782,8.267796993255615,rrf score blend with alpha=0.2
+LightGCN + LightGCN_time_graph alpha=0.5,blend_LightGCN_time_graph,0.01466503817250086,0.01431906614785992,5.3354573249816895,rrf score blend with alpha=0.5
+LightGCN + LightGCN_time_graph alpha=0.7,blend_LightGCN_time_graph,0.01428085868384376,0.01431906614785992,6.062663793563843,rrf score blend with alpha=0.7
+LightGCN + recent_pop_180d alpha=0.25,blend_recent_pop_180d,0.01628147337102561,0.014259465134951514,4.878504037857056,rrf score blend with alpha=0.25
+LightGCN + recent_pop_365d alpha=0.25,blend_recent_pop_365d,0.016424526872288066,0.014181644123278362,7.248427867889404,rrf score blend with alpha=0.25
+LightGCN + category_pop_365d alpha=0.6,blend_category_pop_365d,0.010362441332590587,0.013964548205793341,7.760076522827148,rrf score blend with alpha=0.6
+recent_pop_365d,standalone_signal,0.011020562139965126,0.013873448211969612,0.9386143684387207,Timestamp-only recent popularity.
+LightGCN + recent_pop_365d alpha=1,blend_recent_pop_365d,0.011020562139965126,0.013873448211969612,7.592417001724243,rrf score blend with alpha=1.0
+LightGCN + recent_pop_180d alpha=0.15,blend_recent_pop_180d,0.0161085392428676,0.013811994317830893,4.683234930038452,rrf score blend with alpha=0.15
+LightGCN + category_pop_365d alpha=0.25,blend_category_pop_365d,0.014074789074789073,0.0130587980977086,7.4451003074646,rrf score blend with alpha=0.25
+LightGCN + category_pop_365d alpha=0.2,blend_category_pop_365d,0.014008518112995725,0.0130587980977086,8.110250234603882,rrf score blend with alpha=0.2
+LightGCN + recent_pop_365d alpha=0.15,blend_recent_pop_365d,0.015552759582610329,0.012955963189426224,6.1058125495910645,rrf score blend with alpha=0.15
+LightGCN + category_pop_365d alpha=0.15,blend_category_pop_365d,0.014267519118265386,0.012747514051015995,7.151757717132568,rrf score blend with alpha=0.15
+LightGCN + category_pop_365d alpha=0.85,blend_category_pop_365d,0.008782129677652066,0.012744117102093756,8.123076915740967,rrf score blend with alpha=0.85
+LightGCN + LightGCN_time_graph alpha=0.45,blend_LightGCN_time_graph,0.014502935771592486,0.012568093385214007,5.451908588409424,rrf score blend with alpha=0.45
+LightGCN + LightGCN_time_graph alpha=0.35,blend_LightGCN_time_graph,0.014579664952799281,0.012472978815391268,5.432559013366699,rrf score blend with alpha=0.35
+LightGCN + LightGCN_time_graph alpha=0.3,blend_LightGCN_time_graph,0.014516915636318623,0.012472978815391268,5.332791566848755,rrf score blend with alpha=0.3
+LightGCN + LightGCN_popular_negatives alpha=0.25,blend_LightGCN_popular_negatives,0.01426847956698703,0.012263294422827496,5.0378124713897705,rrf score blend with alpha=0.25
+LightGCN + LightGCN_time_graph alpha=0.4,blend_LightGCN_time_graph,0.014537085059473117,0.012213575443147428,5.546216011047363,rrf score blend with alpha=0.4
+LightGCN + LightGCN_time_graph alpha=0.25,blend_LightGCN_time_graph,0.014212133241983988,0.012006052745352358,5.496064186096191,rrf score blend with alpha=0.25
+LightGCN + LightGCN_popular_negatives alpha=0.2,blend_LightGCN_popular_negatives,0.014782799857426723,0.011815823605706875,5.458483457565308,rrf score blend with alpha=0.2
+LightGCN + itemknn_cosine alpha=0.15,blend_itemknn_cosine,0.013393350706783541,0.011729355814958929,6.023326635360718,rrf score blend with alpha=0.15
+LightGCN + itemknn_cosine alpha=0.2,blend_itemknn_cosine,0.013040225726792892,0.011729355814958929,6.489023685455322,rrf score blend with alpha=0.2
+LightGCN + sequence_transition alpha=0.15,blend_sequence_transition,0.014204022786112337,0.011710827002655796,7.296017408370972,rrf score blend with alpha=0.15
+LightGCN + LightGCN_time_graph alpha=0.15,blend_LightGCN_time_graph,0.013934776994478487,0.011599654128837008,5.445235252380371,rrf score blend with alpha=0.15
+LightGCN + LightGCN_time_graph alpha=0.2,blend_LightGCN_time_graph,0.014407104332477464,0.011513186338089062,5.398177862167358,rrf score blend with alpha=0.2
+category_pop_365d,standalone_signal,0.008028977805097207,0.01144710024087456,1.7232272624969482,Metadata category-aware recent popularity.
+LightGCN + category_pop_365d alpha=1,blend_category_pop_365d,0.008028977805097207,0.01144710024087456,7.910573482513428,rrf score blend with alpha=1.0
+LightGCN + itemknn_cosine alpha=0.25,blend_itemknn_cosine,0.012932121887345768,0.01134025075659317,6.600525379180908,rrf score blend with alpha=0.25
+LightGCN + content_tfidf alpha=0.35,blend_content_tfidf,0.013655553207792014,0.011262429744920017,60.108914613723755,rrf score blend with alpha=0.35
+LightGCN_plain,baseline,0.014611519835400433,0.011210549070471249,1.515803337097168,Plain binary user-item graph with uniform negatives.
+LightGCN + content_tfidf alpha=0.25,blend_content_tfidf,0.014278937786400473,0.011132728058798098,60.43757963180542,rrf score blend with alpha=0.25
+LightGCN + sequence + content,controlled_combo,0.013762216374156673,0.011098140942498919,87.08073329925537,Controlled multi-signal blend using best individual alpha values; not a reranker.
+LightGCN + LightGCN_popular_negatives alpha=0.15,blend_LightGCN_popular_negatives,0.014670000490896012,0.011037613488975357,5.38798451423645,rrf score blend with alpha=0.15
+LightGCN + content_tfidf alpha=0.15,blend_content_tfidf,0.014186094409975005,0.01101599654128837,58.80490970611572,rrf score blend with alpha=0.15
+LightGCN + sequence_transition alpha=0.3,blend_sequence_transition,0.012640198834228684,0.01100827620282873,6.394809722900391,rrf score blend with alpha=0.3
+LightGCN + sequence_transition alpha=0.2,blend_sequence_transition,0.013870907154489244,0.010965042307454759,6.173353672027588,rrf score blend with alpha=0.2
+LightGCN + content_tfidf alpha=0.2,blend_content_tfidf,0.0140369047085465,0.010938175529615218,59.94730019569397,rrf score blend with alpha=0.2
+LightGCN + itemknn_cosine alpha=0.3,blend_itemknn_cosine,0.01267440148037163,0.010683095546908777,6.713470697402954,rrf score blend with alpha=0.3
+LightGCN + itemknn_cosine alpha=0.35,blend_itemknn_cosine,0.012203408098930488,0.010674448767833982,6.466023921966553,rrf score blend with alpha=0.35
+LightGCN + content_tfidf alpha=0.3,blend_content_tfidf,0.013718676032108867,0.01061392131431042,59.942028522491455,rrf score blend with alpha=0.3
+LightGCN + sequence_transition alpha=0.35,blend_sequence_transition,0.012023910904507919,0.010489469458341054,6.963360548019409,rrf score blend with alpha=0.35
+LightGCN + LightGCN_popular_negatives alpha=0.3,blend_LightGCN_popular_negatives,0.01365779425480918,0.010447470817120622,5.564682483673096,rrf score blend with alpha=0.3
+LightGCN + content_tfidf alpha=0.4,blend_content_tfidf,0.01323871846259906,0.010415045395590142,60.03112602233887,rrf score blend with alpha=0.4
+LightGCN + sequence_transition alpha=0.25,blend_sequence_transition,0.012927052852425987,0.010100364399975295,5.123507261276245,rrf score blend with alpha=0.25
+LightGCN + itemknn_cosine alpha=0.4,blend_itemknn_cosine,0.011886299946001438,0.009818417639429313,6.568796634674072,rrf score blend with alpha=0.4
+LightGCN + LightGCN_popular_negatives alpha=0.35,blend_LightGCN_popular_negatives,0.01354254040821205,0.009650731888085974,5.6733129024505615,rrf score blend with alpha=0.35
+LightGCN + sequence_transition alpha=0.6,blend_sequence_transition,0.011493903284948061,0.009633438329936383,7.214762449264526,rrf score blend with alpha=0.6
+LightGCN_popular_negatives,lightgcn_variant,0.01158909442491532,0.009534000370576246,1.7773873805999756,"Same graph, but negatives sampled by item popularity^0.75."
+LightGCN + LightGCN_popular_negatives alpha=1,blend_LightGCN_popular_negatives,0.01158909442491532,0.009534000370576246,6.782029628753662,rrf score blend with alpha=1.0
+LightGCN + sequence_transition alpha=0.4,blend_sequence_transition,0.011643679927262016,0.009451855969365696,6.2001307010650635,rrf score blend with alpha=0.4
+LightGCN + LightGCN_popular_negatives alpha=0.6,blend_LightGCN_popular_negatives,0.012396244858931425,0.009274596998332408,5.318277359008789,rrf score blend with alpha=0.6
+LightGCN + content_tfidf alpha=0.45,blend_content_tfidf,0.012647082050067125,0.009135322092520534,60.023489236831665,rrf score blend with alpha=0.45
+LightGCN + itemknn_cosine alpha=0.45,blend_itemknn_cosine,0.011202780605765681,0.008910505836575875,6.9185075759887695,rrf score blend with alpha=0.45
+LightGCN + LightGCN_popular_negatives alpha=0.7,blend_LightGCN_popular_negatives,0.012340218683502263,0.00875579025384473,5.296149253845215,rrf score blend with alpha=0.7
+LightGCN + LightGCN_popular_negatives alpha=0.85,blend_LightGCN_popular_negatives,0.011723930753781501,0.00875579025384473,5.486703395843506,rrf score blend with alpha=0.85
+LightGCN + sequence_transition alpha=0.7,blend_sequence_transition,0.010522782910842613,0.008671484157865481,7.2398059368133545,rrf score blend with alpha=0.7
+LightGCN + LightGCN_popular_negatives alpha=0.4,blend_LightGCN_popular_negatives,0.013345328270701404,0.008522327218825274,5.590493440628052,rrf score blend with alpha=0.4
+LightGCN + LightGCN_popular_negatives alpha=0.45,blend_LightGCN_popular_negatives,0.012977796559886113,0.008522327218825274,5.241018772125244,rrf score blend with alpha=0.45
+LightGCN + LightGCN_popular_negatives alpha=0.5,blend_LightGCN_popular_negatives,0.012678616783094395,0.008522327218825274,5.292633533477783,rrf score blend with alpha=0.5
+LightGCN + sequence_transition alpha=0.5,blend_sequence_transition,0.011254111254111255,0.008427212649002532,6.367592096328735,rrf score blend with alpha=0.5
+LightGCN + content_tfidf alpha=0.5,blend_content_tfidf,0.010959520287878497,0.008344141807176826,60.135262966156006,rrf score blend with alpha=0.5
+LightGCN + itemknn_cosine alpha=0.5,blend_itemknn_cosine,0.009906174831547964,0.008132295719844357,5.9131224155426025,rrf score blend with alpha=0.5
+LightGCN + sequence_transition alpha=0.45,blend_sequence_transition,0.011210784345112704,0.007843555061453894,6.601816892623901,rrf score blend with alpha=0.45
+LightGCN + sequence_transition alpha=0.85,blend_sequence_transition,0.009698824624197758,0.007115063924402446,6.513023138046265,rrf score blend with alpha=0.85
+LightGCN + itemknn_cosine alpha=0.6,blend_itemknn_cosine,0.008251908625042954,0.006186770428015563,6.590719699859619,rrf score blend with alpha=0.6
+sequence_transition,standalone_signal,0.007710695770397263,0.006070038910505836,1.4723024368286133,Directional next-item transition from timestamp-ordered histories.
+LightGCN + sequence_transition alpha=1,blend_sequence_transition,0.007889979531770577,0.005875486381322957,7.079679250717163,rrf score blend with alpha=1.0
+LightGCN + itemknn_cosine alpha=0.7,blend_itemknn_cosine,0.007634873679649799,0.005603112840466926,6.012026786804199,rrf score blend with alpha=0.7
+itemknn_cosine,standalone_signal,0.006709641411133948,0.004974986103390772,1.2682232856750488,Local item-item co-visitation signal.
+LightGCN + itemknn_cosine alpha=1,blend_itemknn_cosine,0.006642410000618955,0.004974986103390772,6.569589138031006,rrf score blend with alpha=1.0
+LightGCN + itemknn_cosine alpha=0.85,blend_itemknn_cosine,0.00668595034266676,0.004897165091717621,5.8000569343566895,rrf score blend with alpha=0.85
+content_tfidf,standalone_signal,0.005584795883303346,0.0026403557531962203,76.59496855735779,TF-IDF using item_meta text fields only.
+LightGCN + content_tfidf alpha=1,blend_content_tfidf,0.005458016652046502,0.0025291828793774325,60.330172061920166,rrf score blend with alpha=1.0
+LightGCN + content_tfidf alpha=0.7,blend_content_tfidf,0.005850946895723016,0.002442715088629486,60.08851194381714,rrf score blend with alpha=0.7
+LightGCN + content_tfidf alpha=0.85,blend_content_tfidf,0.0055775391596287124,0.002442715088629486,59.99283146858215,rrf score blend with alpha=0.85
+LightGCN + content_tfidf alpha=0.6,blend_content_tfidf,0.006198469258170751,0.001664504971897968,60.06319069862366,rrf score blend with alpha=0.6
