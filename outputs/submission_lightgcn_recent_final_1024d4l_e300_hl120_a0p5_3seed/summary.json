@@ -1,0 +1,9 @@
+{
+  "run_id": "final_1024d4l_e300_hl120_a0p5_3seed",
+  "output_dir": "outputs/submission_lightgcn_recent_final_1024d4l_e300_hl120_a0p5_3seed",
+  "num_outputs": 1,
+  "outputs": [
+    "outputs/submission_lightgcn_recent_final_1024d4l_e300_hl120_a0p5_3seed/lgcn_d1024_l4_e300_binarygraph_uniform_seeds42-43-44_rrf_hl120_alpha0p5.csv"
+  ],
+  "train_time_sec": 1729.9873971939087
+}

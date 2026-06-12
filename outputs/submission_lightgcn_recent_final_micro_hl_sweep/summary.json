@@ -1,0 +1,11 @@
+{
+  "run_id": "final_micro_hl_sweep",
+  "output_dir": "outputs/submission_lightgcn_recent_final_micro_hl_sweep",
+  "num_outputs": 3,
+  "outputs": [
+    "outputs/submission_lightgcn_recent_final_micro_hl_sweep/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl110_alpha0p5.csv",
+    "outputs/submission_lightgcn_recent_final_micro_hl_sweep/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl115_alpha0p5.csv",
+    "outputs/submission_lightgcn_recent_final_micro_hl_sweep/lgcn_d512_l4_e220_binarygraph_uniform_seeds42-43-44_rrf_hl125_alpha0p5.csv"
+  ],
+  "train_time_sec": 681.9341189861298
+}
