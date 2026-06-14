@@ -91,3 +91,4 @@ The submission CSV is written to `outputs/submission_lightgcn_recent_final/`.
 - `02_feature_addition_experiments.py`: multi-seed, trend, dynamic-alpha, recent-window, and category-popularity experiments.
 - `03_finetune_validation_sweep.py`: final validation sweeps over half-life, alpha, and LightGCN capacity.
 - `04_train_submission.py`: trains on all training interactions and writes Kaggle submission files.
+- `recommender_common/`: shared data loading, matrix, LightGCN, scoring, signal, and submission helpers used by the scripts.
