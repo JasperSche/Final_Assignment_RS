@@ -19,6 +19,7 @@ from torch.utils.data import Dataset, DataLoader
 MS_PER_DAY = 1000 * 60 * 60 * 24
 KEY_COLS = ['user_id', 'item_id', 'timestamp']
 
+# Small utilities kept local so this script can run as a standalone experiment.
 def seed_everything(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -59,6 +60,7 @@ def coerce_text(x) -> str:
     return '' if pd.isna(x) else str(x)
 
 def build_item_static(item_meta: pd.DataFrame, all_item_ids: Sequence[int], item2idx: Dict[int, int]) -> pd.DataFrame:
+    # Keep one dense row per encoded item; missing metadata is allowed.
     meta = item_meta.drop_duplicates('item_id').copy()
     base = pd.DataFrame({'item_id': all_item_ids})
     base['item_idx'] = base['item_id'].map(item2idx).astype('int32')
@@ -88,6 +90,7 @@ def add_indices(df: pd.DataFrame, user2idx: Dict[int, int], item2idx: Dict[int, 
     return out
 
 def split_provided_test(train: pd.DataFrame, test: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, float]:
+    # The provided test is only useful as validation when its rows also exist in train.
     valid_keys = test[KEY_COLS].drop_duplicates().assign(_valid_row=1)
     overlap = test[KEY_COLS].drop_duplicates().merge(train[KEY_COLS].drop_duplicates().assign(_in_train=1), on=KEY_COLS, how='left')['_in_train'].fillna(0).mean()
     merged = train.merge(valid_keys, on=KEY_COLS, how='left')
@@ -176,6 +179,7 @@ class TorchLightGCN(nn.Module):
         return torch.split(final, [self.n_users, self.n_items], dim=0)
 
 def build_norm_adj(X_weighted: sparse.csr_matrix, n_users: int, n_items: int, device: torch.device) -> torch.Tensor:
+    # Build the symmetric LightGCN graph and apply degree normalization.
     X = X_weighted.tocoo()
     u = X.row.astype(np.int64)
     i = X.col.astype(np.int64) + n_users
@@ -205,6 +209,7 @@ def build_popularity_sampler(X_binary: sparse.csr_matrix, power: float=0.75) -> 
     return probs / probs.sum()
 
 def sample_bpr_batch(active_users, pos_arrays, pos_sets, n_items, batch_size, rng, neg_probs=None):
+    # Draw one observed item and one unseen negative item for each sampled user.
     users = rng.choice(active_users, size=batch_size, replace=True)
     pos = np.empty(batch_size, dtype=np.int64)
     for r, u in enumerate(users):
@@ -262,6 +267,7 @@ def train_lightgcn(cfg: LightGCNConfig, X_binary: sparse.csr_matrix, X_graph: sp
             users_t = torch.LongTensor(users).to(device)
             pos_t = torch.LongTensor(pos).to(device)
             neg_t = torch.LongTensor(neg).to(device)
+            # Recompute propagated embeddings after each update
             user_e, item_e = model.propagate(norm_adj)
             u_e, p_e, n_e = (user_e[users_t], item_e[pos_t], item_e[neg_t])
             pos_scores = (u_e * p_e).sum(dim=1)
@@ -348,6 +354,7 @@ class ContentTfidfScorer:
         text = item_static.sort_values('item_idx')['text_for_content'].fillna('').astype(str).values
         max_word = 80000 if quick else 200000
         max_char = 40000 if quick else 100000
+        # Word and character features make the content signal less brittle to sparse titles.
         self.vectorizer = FeatureUnion([('word', TfidfVectorizer(analyzer='word', ngram_range=(1, 2), min_df=2, max_features=max_word, sublinear_tf=True, dtype=np.float32)), ('char', TfidfVectorizer(analyzer='char_wb', ngram_range=(3, 5), min_df=2, max_features=max_char, sublinear_tf=True, dtype=np.float32))])
         print('Fitting metadata TF-IDF content scorer...')
         self.F_items = normalize(self.vectorizer.fit_transform(text), norm='l2', axis=1).tocsr().astype(np.float32)
@@ -473,6 +480,7 @@ def build_sequence_transition_matrix(train_df: pd.DataFrame, n_items: int, topk:
         ts = g['timestamp'].to_numpy(np.int64)
         if len(items) < 2:
             continue
+        # Count adjacent interactions as directional transitions.
         for a in range(len(items) - 1):
             i, j = (int(items[a]), int(items[a + 1]))
             if i == j:
@@ -570,6 +578,7 @@ class SASRecNet(nn.Module):
         h = torch.zeros((B, self.item_emb.embedding_dim), device=seq.device, dtype=x.dtype)
         valid_rows = lengths_raw > 0
         if valid_rows.any():
+            # Use the last real position as the user's current sequential state.
             out = self.encoder(x[valid_rows], mask=causal_mask, src_key_padding_mask=padding_mask[valid_rows])
             out = self.norm(out)
             lengths = lengths_raw[valid_rows].clamp(min=1) - 1
@@ -670,6 +679,7 @@ def recall_at_k(scorer, valid_df, X_seen, allowed_items, users, k=10, batch_size
         for r, u in enumerate(batch_users):
             seen = X_seen[int(u)].indices
             if len(seen):
+                # Do not give credit for recommending items already present in the context.
                 scores_allowed[r, np.isin(allowed_items, seen, assume_unique=False)] = -np.inf
             row = scores_allowed[r]
             finite = np.isfinite(row)
@@ -798,6 +808,7 @@ def main():
     alpha_grid = parse_alpha_grid(args.alpha_grid)
     best_alphas = {}
     scorers = {}
+    # Start from a plain LightGCN, then add one signal at a time to see what actually helps.
     lightgcn_plain = train_lightgcn(LightGCNConfig('LightGCN_plain', args.dim, args.layers, args.epochs, args.batch_size, args.lr, args.reg, args.seed, 'uniform'), X_binary, X_binary, data.n_users, data.n_items, device)
     scorers['LightGCN_plain'] = lightgcn_plain
     evaluate_and_record(results, 'LightGCN_plain', 'baseline', lightgcn_plain, data, X_binary, allowed_items, all_users, target_users, args.k, args.eval_batch_size, 'Plain binary user-item graph with uniform negatives.')

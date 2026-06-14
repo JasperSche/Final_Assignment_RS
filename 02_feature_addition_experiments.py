@@ -20,6 +20,7 @@ import torch.nn.functional as F
 MS_PER_DAY = 1000 * 60 * 60 * 24
 KEY_COLS = ['user_id', 'item_id', 'timestamp']
 
+# Utility helpers are duplicated here to keep each experiment script self-contained.
 def seed_everything(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -76,6 +77,7 @@ def parse_dynamic_alpha_specs(s: str) -> List[List[Tuple[int, float]]]:
     return specs
 
 def alpha_for_history_len(hist_len: int, bins: Sequence[Tuple[int, float]]) -> float:
+    # Users with short histories usually need more popularity fallback.
     for upper, alpha in bins:
         if hist_len <= upper:
             return alpha
@@ -256,6 +258,7 @@ class TorchLightGCN(nn.Module):
         return torch.split(final, [self.n_users, self.n_items], dim=0)
 
 def build_norm_adj(X_graph: sparse.csr_matrix, n_users: int, n_items: int, device: torch.device) -> torch.Tensor:
+    # LightGCN uses one bipartite graph with users and items in the same adjacency matrix.
     X = X_graph.tocoo()
     u = X.row.astype(np.int64)
     i = X.col.astype(np.int64) + n_users
@@ -283,6 +286,7 @@ def prepare_user_positive_arrays(X_binary: sparse.csr_matrix):
     return (active_users, pos_arrays, pos_sets)
 
 def sample_bpr_batch(active_users: np.ndarray, pos_arrays: Dict[int, np.ndarray], pos_sets: Dict[int, set], n_items: int, batch_size: int, rng: np.random.Generator):
+    # BPR needs positives from history and negatives outside that user's history.
     users = rng.choice(active_users, size=batch_size, replace=True)
     pos = np.empty(batch_size, dtype=np.int64)
     for r, u in enumerate(users):
@@ -332,6 +336,7 @@ def train_lightgcn(name: str, seed: int, cfg: LightGCNConfig, X_binary: sparse.c
             users_t = torch.LongTensor(users).to(device)
             pos_t = torch.LongTensor(pos).to(device)
             neg_t = torch.LongTensor(neg).to(device)
+            # Propagation mixes neighbor embeddings before the pairwise ranking loss.
             user_e, item_e = model.propagate(norm_adj)
             u_e = user_e[users_t]
             p_e = item_e[pos_t]
@@ -378,6 +383,7 @@ class MultiSeedLightGCNScorer:
         out = None
         for emb in self.embeddings:
             raw = emb.user_emb[user_indices] @ emb.item_emb.T
+            # Average ranks instead of raw dot products so seeds stay comparable.
             comp = dense_rrf(raw, rrf_k=self.rrf_k)
             out = comp if out is None else out + comp
         out /= float(len(self.embeddings))
@@ -422,6 +428,7 @@ class DynamicAlphaBlendScorer:
     def score_batch(self, user_indices: np.ndarray) -> np.ndarray:
         base = normalize_dense(self.base_scorer.score_batch(user_indices), method=self.norm, rrf_k=self.rrf_k)
         pop = normalize_dense(self.pop_scorer.score_batch(user_indices), method=self.norm, rrf_k=self.rrf_k)
+        # Pick a popularity weight per user based on how much history we have.
         alphas = np.array([alpha_for_history_len(int(self.hist_len[int(u)]), self.alpha_bins) for u in user_indices], dtype=np.float32)
         return ((1.0 - alphas[:, None]) * base + alphas[:, None] * pop).astype(np.float32)
 
@@ -506,6 +513,7 @@ def recall_at_k(scorer, valid_df: pd.DataFrame, X_seen: sparse.csr_matrix, allow
         for r, u in enumerate(batch_users):
             seen = X_seen[int(u)].indices
             if len(seen):
+                # Validation should measure discovery, not replaying context items.
                 seen_mask = np.isin(allowed_items, seen, assume_unique=False)
                 scores_allowed[r, seen_mask] = -np.inf
             row = scores_allowed[r]
@@ -619,6 +627,7 @@ def main():
     trend_specs = parse_trend_specs(args.trend_specs)
     cfg = LightGCNConfig(dim=args.dim, layers=args.layers, epochs=args.epochs, batch_size=args.batch_size, lr=args.lr, reg=args.reg)
     full_embeddings: List[Embeddings] = []
+    # Train the current best LightGCN family first, then test additions against it.
     for seed in seeds:
         emb = train_lightgcn(name='LightGCN_full', seed=seed, cfg=cfg, X_binary=X_context, n_users=data.n_users, n_items=data.n_items, device=device)
         full_embeddings.append(emb)
@@ -647,6 +656,7 @@ def main():
         recent_df = recent_window_df(data.train_context, window)
         X_recent = make_interaction_matrix(recent_df, data.n_users, data.n_items, binary_after_sum=True)
         recent_embeddings = []
+        # A recent-window model checks whether short-term behavior deserves its own embedding space.
         for seed in recent_lgcn_seeds:
             emb = train_lightgcn(name=f'LightGCN_recent{window}d', seed=seed, cfg=recent_cfg, X_binary=X_recent, n_users=data.n_users, n_items=data.n_items, device=device)
             recent_embeddings.append(emb)

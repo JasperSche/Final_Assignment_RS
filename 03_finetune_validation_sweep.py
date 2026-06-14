@@ -19,6 +19,7 @@ import torch.nn.functional as F
 MS_PER_DAY = 1000 * 60 * 60 * 24
 KEY_COLS = ['user_id', 'item_id', 'timestamp']
 
+# This sweep is self-contained
 def seed_everything(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -47,6 +48,7 @@ def parse_float_list(s: str) -> List[float]:
     return [float(x.strip()) for x in str(s).split(',') if x.strip()]
 
 def make_interaction_matrix(df: pd.DataFrame, n_users: int, n_items: int, weights: Optional[np.ndarray]=None, binary_after_sum: bool=True) -> sparse.csr_matrix:
+    # Rows are users, columns are items. duplicate interactions collapse into one edge by default.
     rows = df['user_idx'].to_numpy(np.int32)
     cols = df['item_idx'].to_numpy(np.int32)
     vals = np.ones(len(df), dtype=np.float32) if weights is None else weights.astype(np.float32)
@@ -128,6 +130,7 @@ def add_indices(df: pd.DataFrame, user2idx: Dict[int, int], item2idx: Dict[int, 
     return out
 
 def split_provided_test(train: pd.DataFrame, test: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, float]:
+    # Use exact test rows as holdout when the assignment split is embedded in train.
     valid_keys = test[KEY_COLS].drop_duplicates().assign(_valid_row=1)
     overlap = test[KEY_COLS].drop_duplicates().merge(train[KEY_COLS].drop_duplicates().assign(_in_train=1), on=KEY_COLS, how='left')['_in_train'].fillna(0).mean()
     merged = train.merge(valid_keys, on=KEY_COLS, how='left')
@@ -208,6 +211,7 @@ class TorchLightGCN(nn.Module):
         return torch.split(final, [self.n_users, self.n_items], dim=0)
 
 def build_norm_adj(X_graph: sparse.csr_matrix, n_users: int, n_items: int, device: torch.device) -> torch.Tensor:
+    # Convert the user-item matrix into the normalized graph LightGCN propagates over.
     X = X_graph.tocoo()
     u = X.row.astype(np.int64)
     i = X.col.astype(np.int64) + n_users
@@ -235,6 +239,7 @@ def prepare_user_positive_arrays(X_binary: sparse.csr_matrix):
     return (active_users, pos_arrays, pos_sets)
 
 def sample_bpr_batch(active_users: np.ndarray, pos_arrays: Dict[int, np.ndarray], pos_sets: Dict[int, set], n_items: int, batch_size: int, rng: np.random.Generator):
+    # Random negatives are resampled if they collide with a user's known positives.
     users = rng.choice(active_users, size=batch_size, replace=True)
     pos = np.empty(batch_size, dtype=np.int64)
     for r, u in enumerate(users):
@@ -281,6 +286,7 @@ def train_lightgcn(seed: int, cfg: TrainConfig, X_binary: sparse.csr_matrix, n_u
             users_t = torch.LongTensor(users).to(device)
             pos_t = torch.LongTensor(pos).to(device)
             neg_t = torch.LongTensor(neg).to(device)
+            # The BPR objective pushes each positive above its paired negative.
             user_e, item_e = model.propagate(norm_adj)
             u_e = user_e[users_t]
             p_e = item_e[pos_t]
@@ -314,6 +320,7 @@ def build_lightgcn_component(embeddings: Sequence[Embeddings], user_indices: np.
     out = None
     for emb in embeddings:
         raw = emb.user_emb[user_indices] @ emb.item_emb.T
+        # Normalize per seed before averaging, so one seed cannot dominate by scale.
         comp = normalize_dense(raw, method=norm, rrf_k=rrf_k)
         out = comp if out is None else out + comp
     out /= float(len(embeddings))
@@ -332,11 +339,13 @@ def recall_at_k_blend(embeddings: Sequence[Embeddings], pop_component: np.ndarra
     for start in iterator:
         batch_users = users[start:start + batch_size]
         lgcn_component = build_lightgcn_component(embeddings, batch_users, norm=norm, rrf_k=rrf_k)
+        # Alpha is the amount of recent-popularity signal mixed into LightGCN.
         scores = (1.0 - alpha) * lgcn_component + alpha * pop_component[None, :]
         scores_allowed = scores[:, allowed_items].copy()
         for r, u in enumerate(batch_users):
             seen = X_seen[int(u)].indices
             if len(seen):
+                # Hide items the user already interacted with in the training context.
                 seen_mask = np.isin(allowed_items, seen, assume_unique=False)
                 scores_allowed[r, seen_mask] = -np.inf
             row = scores_allowed[r]
@@ -419,9 +428,11 @@ def main():
     alphas = parse_float_list(args.alphas)
     cfg = TrainConfig(dim=args.dim, layers=args.layers, epochs=args.epochs, batch_size=args.batch_size, lr=args.lr, reg=args.reg)
     embeddings = []
+    # Train all requested seeds once, then reuse them across the half-life/alpha grid.
     for seed in seeds:
         embeddings.append(train_lightgcn(seed=seed, cfg=cfg, X_binary=X_context, n_users=data.n_users, n_items=data.n_items, device=device))
     rows = []
+    # Precompute popularity components because the same vectors are reused many times.
     pop_components = {hl: normalize_vector(time_weighted_item_scores(data.train_context, data.n_items, hl), method=args.blend_norm, rrf_k=args.rrf_k) for hl in half_lives}
     for hl in half_lives:
         for alpha in alphas:

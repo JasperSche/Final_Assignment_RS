@@ -20,6 +20,7 @@ import torch.nn.functional as F
 MS_PER_DAY = 1000 * 60 * 60 * 24
 KEY_COLS = ['user_id', 'item_id', 'timestamp']
 
+# Final training script: no validation split, just train and write submission files.
 def seed_everything(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -63,6 +64,7 @@ def safe_name(x) -> str:
     return str(x).replace('.', 'p').replace('-', 'm').replace(',', '_')
 
 def make_interaction_matrix(df: pd.DataFrame, n_users: int, n_items: int, weights: Optional[np.ndarray]=None, binary_after_sum: bool=True) -> sparse.csr_matrix:
+    # Sparse matrices keep scoring feasible when the item catalog is large.
     rows = df['user_idx'].to_numpy(np.int32)
     cols = df['item_idx'].to_numpy(np.int32)
     vals = np.ones(len(df), dtype=np.float32) if weights is None else weights.astype(np.float32)
@@ -73,6 +75,7 @@ def make_interaction_matrix(df: pd.DataFrame, n_users: int, n_items: int, weight
     return X
 
 def time_decay_weights(df: pd.DataFrame, half_life_days: int) -> np.ndarray:
+    # Newer interactions get more influence when building a recency-weighted graph.
     max_ts = df['timestamp'].max()
     age_days = (max_ts - df['timestamp'].to_numpy()) / MS_PER_DAY
     return np.exp(-np.log(2) * age_days / half_life_days).astype(np.float32)
@@ -173,6 +176,7 @@ def load_data(data_dir: Path) -> EncodedData:
     train_raw = pd.read_csv(train_path).drop_duplicates(KEY_COLS).copy()
     sample = pd.read_csv(sample_path).copy()
     train_raw['timestamp'] = pd.to_numeric(train_raw['timestamp'], errors='coerce').astype('int64')
+    # Encode users from both train and sample so every requested user can be scored.
     all_user_ids = set(train_raw.user_id.unique()) | set(sample.user_id.unique())
     all_item_ids = set(train_raw.item_id.unique())
     all_user_ids = np.array(sorted((int(u) for u in all_user_ids)))
@@ -214,6 +218,7 @@ class TorchLightGCN(nn.Module):
         return torch.split(final, [self.n_users, self.n_items], dim=0)
 
 def build_norm_adj(X_graph: sparse.csr_matrix, n_users: int, n_items: int, device: torch.device) -> torch.Tensor:
+    # LightGCN propagates on a symmetric user-item graph with degree normalization.
     X = X_graph.tocoo()
     u = X.row.astype(np.int64)
     i = X.col.astype(np.int64) + n_users
@@ -247,6 +252,7 @@ def build_popularity_sampler(X_binary: sparse.csr_matrix, power: float=0.75) -> 
     return probs
 
 def sample_bpr_batch(active_users: np.ndarray, pos_arrays: Dict[int, np.ndarray], pos_sets: Dict[int, set], n_items: int, batch_size: int, rng: np.random.Generator, neg_probs: Optional[np.ndarray]=None):
+    # Popularity-weighted negatives can make the model compare against harder items.
     users = rng.choice(active_users, size=batch_size, replace=True)
     pos = np.empty(batch_size, dtype=np.int64)
     for r, u in enumerate(users):
@@ -302,6 +308,7 @@ def train_one_lightgcn(seed: int, cfg: TrainConfig, X_binary: sparse.csr_matrix,
             users_t = torch.LongTensor(users).to(device)
             pos_t = torch.LongTensor(pos).to(device)
             neg_t = torch.LongTensor(neg).to(device)
+            # Pairwise ranking: observed item should score higher than sampled negative.
             user_e, item_e = model.propagate(norm_adj)
             u_e = user_e[users_t]
             p_e = item_e[pos_t]
@@ -332,6 +339,7 @@ def make_lightgcn_component(embeddings: Sequence[TrainedEmbeddings], user_indice
     out = None
     for emb in embeddings:
         raw = emb.user_emb[user_indices] @ emb.item_emb.T
+        # Normalize each seed before averaging to avoid scale differences between runs.
         comp = normalize_dense(raw, method=blend_norm, rrf_k=rrf_k)
         out = comp if out is None else out + comp
     out /= float(len(embeddings))
@@ -344,6 +352,7 @@ def build_submission_dataframe(sample: pd.DataFrame, pred_item_indices: Dict[int
         pred_col = 'prediction'
         sep = ' '
     else:
+        # Some sample files expect a single item_id field with comma-separated IDs.
         pred_col = 'item_id'
         sep = ','
     for _, row in sample.iterrows():
@@ -363,6 +372,7 @@ def generate_predictions(data: EncodedData, X_seen: sparse.csr_matrix, embedding
     allowed_items = data.train_item_indices
     allowed_mask = np.zeros(data.n_items, dtype=bool)
     allowed_mask[allowed_items] = True
+    # Restrict predictions to items observed in training; unseen metadata-only items cannot be ranked reliably.
     hist_len = np.diff(X_seen.indptr)
     output_paths = []
     pop_components = {hl: normalize_vector(scores, method=blend_norm, rrf_k=rrf_k) for hl, scores in pop_score_vectors.items()}
@@ -381,6 +391,7 @@ def generate_predictions(data: EncodedData, X_seen: sparse.csr_matrix, embedding
                 for r, u in enumerate(batch_users):
                     seen = X_seen[int(u)].indices
                     if len(seen):
+                        # Never recommend items the user already has in the training history.
                         scores[r, seen] = -np.inf
                     row = scores[r]
                     k = 10
@@ -405,6 +416,7 @@ def generate_predictions(data: EncodedData, X_seen: sparse.csr_matrix, embedding
                 batch_users = target_users[start:start + batch_size]
                 lgcn_component = make_lightgcn_component(embeddings, batch_users, blend_norm=blend_norm, rrf_k=rrf_k)
                 user_alphas = np.array([alpha_for_history_len(int(hist_len[int(u)]), dynamic_alpha_bins) for u in batch_users], dtype=np.float32)
+                # Dynamic alpha gives sparse-history users more popularity fallback.
                 scores = (1.0 - user_alphas[:, None]) * lgcn_component + user_alphas[:, None] * pop_component[None, :]
                 scores[:, ~allowed_mask] = -np.inf
                 for r, u in enumerate(batch_users):
@@ -517,6 +529,7 @@ def main():
         json.dump({**vars(args), 'train_config': asdict(cfg), 'seeds_parsed': seeds}, f, indent=2)
     embeddings = []
     t0 = time.time()
+    # Train one or more seeds, then ensemble them during scoring.
     for seed in seeds:
         emb = train_one_lightgcn(seed=seed, cfg=cfg, X_binary=X_binary, X_graph=X_graph, n_users=data.n_users, n_items=data.n_items, device=device)
         embeddings.append(emb)
