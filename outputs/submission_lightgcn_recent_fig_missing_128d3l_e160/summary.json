@@ -1,0 +1,10 @@
+{
+  "run_id": "fig_missing_128d3l_e160",
+  "output_dir": "outputs/submission_lightgcn_recent_fig_missing_128d3l_e160",
+  "num_outputs": 2,
+  "outputs": [
+    "outputs/submission_lightgcn_recent_fig_missing_128d3l_e160/lgcn_d128_l3_e160_binarygraph_uniform_seeds42_rrf_hl180_alpha0p0.csv",
+    "outputs/submission_lightgcn_recent_fig_missing_128d3l_e160/lgcn_d128_l3_e160_binarygraph_uniform_seeds42_rrf_hl180_alpha0p3.csv"
+  ],
+  "train_time_sec": 60.381524324417114
+}

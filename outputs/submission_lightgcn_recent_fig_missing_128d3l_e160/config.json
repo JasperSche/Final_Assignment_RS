@@ -1,0 +1,38 @@
+{
+  "data_dir": "data",
+  "output_root": "outputs",
+  "run_id": "fig_missing_128d3l_e160",
+  "dim": 128,
+  "layers": 3,
+  "epochs": 160,
+  "batch_size": 4096,
+  "lr": 0.002,
+  "reg": 0.0001,
+  "seeds": "42",
+  "neg_sampling": "uniform",
+  "time_decay_graph_half_life": 0,
+  "recent_half_lives": "180",
+  "alphas": "0,0.3",
+  "trend_specs": "",
+  "trend_gammas": "",
+  "trend_base_alphas": "",
+  "blend_norm": "rrf",
+  "rrf_k": 60.0,
+  "prediction_batch_size": 128,
+  "dynamic_alpha": false,
+  "dynamic_alpha_spec": "3:0.75,6:0.65,12:0.55,999999:0.45",
+  "device": "auto",
+  "train_config": {
+    "dim": 128,
+    "layers": 3,
+    "epochs": 160,
+    "batch_size": 4096,
+    "lr": 0.002,
+    "reg": 0.0001,
+    "neg_sampling": "uniform",
+    "time_decay_graph_half_life": null
+  },
+  "seeds_parsed": [
+    42
+  ]
+}
